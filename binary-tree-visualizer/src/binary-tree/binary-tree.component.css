@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 1em;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.container--options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container--options__options {
+  display: flex;
+  gap: 1em;
+}
+
+select {
+  height: 2em;
+  width: 10em;
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
+
+button {
+  height: 2.2em;
+  width: 5em;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
