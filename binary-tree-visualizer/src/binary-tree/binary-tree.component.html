@@ -7,9 +7,11 @@
         <option [value]="order">{{ order }}</option>
         }
       </select>
+      <button (click)="visualizeSelectedOrder()">Visualize</button>
       <button (click)="newRandomBinaryTree()">Random</button>
+      <button (click)="clearBinaryTree()">Clear</button>
     </div>
   </section>
   <!---->
-  <div id="cy" style="width: 100%; height: 100%"></div>
+  <div #cy style="width: 100%; height: 100%"></div>
 </div>

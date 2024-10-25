@@ -14,7 +14,7 @@
 
 .container--options__options {
   display: flex;
-  gap: 1em;
+  gap: 0.5em;
 }
 
 select {
