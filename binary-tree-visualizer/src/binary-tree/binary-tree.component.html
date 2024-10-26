@@ -14,13 +14,18 @@
         <h4>Speed</h4>
         <input
           type="range"
-          min="100"
-          max="1000"
+          [min]="minSpeedAnimation"
+          [max]="maxSpeedAnimation"
           [(ngModel)]="speedAnimation"
           step="100"
         />
       </div>
-      <button (click)="visualizeSelectedOrder()">Visualize</button>
+      <button
+        (click)="visualizeSelectedOrder()"
+        [disabled]="visualizeButtonDisableFlag"
+      >
+        Visualize
+      </button>
       <button
         (click)="newRandomBinaryTree()"
         [disabled]="randomButtonDisableFlag"

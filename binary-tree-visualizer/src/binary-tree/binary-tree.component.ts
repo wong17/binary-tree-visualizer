@@ -41,10 +41,15 @@ export class BinaryTreeComponent implements AfterViewInit {
     ranker: 'tight-tree'
   };
 
-  randomButtonDisableFlag: boolean = false
-  resetButtonDisableFlag: boolean = false
   readonly _orders: string[] = ['Pre-order', 'In-order', 'Post-order']
   selectedOrder: string = 'Pre-order'
+
+  randomButtonDisableFlag: boolean = false
+  resetButtonDisableFlag: boolean = false
+  visualizeButtonDisableFlag: boolean = false
+
+  minSpeedAnimation: number = 100
+  maxSpeedAnimation: number = 1000
   speedAnimation: number = 500
 
   /**
@@ -173,13 +178,15 @@ export class BinaryTreeComponent implements AfterViewInit {
   visualizeSelectedOrder() {
     this.resetNodeStyles();
 
+    const adjustedSpeed = this.maxSpeedAnimation + this.minSpeedAnimation - this.speedAnimation;
+
     let index = 0;
     const highlightNode = (node: cytoscape.NodeSingular) => {
       setTimeout(() => {
         node.style("background-fill", "radial-gradient");
         node.style("background-gradient-stop-colors", "cyan magenta");
         node.style("background-gradient-stop-positions", "25 75 80");
-      }, this.speedAnimation * index++);
+      }, adjustedSpeed * index++);
     };
 
     const rootNodeId = '1'; // El id del nodo raíz
@@ -196,11 +203,11 @@ export class BinaryTreeComponent implements AfterViewInit {
         break;
     }
 
-    this.randomButtonDisableFlag = this.resetButtonDisableFlag = true;
+    this.randomButtonDisableFlag = this.resetButtonDisableFlag = this.visualizeButtonDisableFlag = true;
     // Calcular duración total de la animación para volver a reactivar los botones
-    const totalDuration = this.speedAnimation * index;
+    const totalDuration = adjustedSpeed * index;
     setTimeout(() => {
-      this.randomButtonDisableFlag = this.resetButtonDisableFlag = false;
+      this.randomButtonDisableFlag = this.resetButtonDisableFlag = this.visualizeButtonDisableFlag = false;
     }, totalDuration);
   }
 
