@@ -2,14 +2,37 @@
   <section class="container--options">
     <h1>Binary tree visualizer</h1>
     <div class="container--options__options">
-      <select [(ngModel)]="selectedOrder">
-        @for (order of _orders; track $index) {
-        <option [value]="order">{{ order }}</option>
-        }
-      </select>
+      <div class="container--with--title">
+        <h4>Order</h4>
+        <select [(ngModel)]="selectedOrder">
+          @for (order of _orders; track $index) {
+          <option [value]="order">{{ order }}</option>
+          }
+        </select>
+      </div>
+      <div class="container--with--title">
+        <h4>Speed</h4>
+        <input
+          type="range"
+          min="100"
+          max="1000"
+          [(ngModel)]="speedAnimation"
+          step="100"
+        />
+      </div>
       <button (click)="visualizeSelectedOrder()">Visualize</button>
-      <button (click)="newRandomBinaryTree()">Random</button>
-      <button (click)="clearBinaryTree()">Clear</button>
+      <button
+        (click)="newRandomBinaryTree()"
+        [disabled]="randomButtonDisableFlag"
+      >
+        Random
+      </button>
+      <button
+        (click)="resetBinaryTreeStyle()"
+        [disabled]="resetButtonDisableFlag"
+      >
+        Reset
+      </button>
     </div>
   </section>
   <!---->
