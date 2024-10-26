@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import cytoscape, { CollectionReturnValue } from 'cytoscape';
+import cytoscape from 'cytoscape';
 import dagre, { DagreLayoutOptions } from 'cytoscape-dagre';
 
 @Component({
@@ -40,10 +40,6 @@ export class BinaryTreeComponent implements AfterViewInit {
     name: 'dagre',
     ranker: 'tight-tree'
   };
-  // private readonly cyLayoutOptions: cytoscape.LayoutOptions = {
-  //   name: 'breadthfirst',
-  //   directed: true
-  // };
 
   randomButtonDisableFlag: boolean = false
   resetButtonDisableFlag: boolean = false
@@ -82,8 +78,8 @@ export class BinaryTreeComponent implements AfterViewInit {
   }
 
   /**
-   * Genera un árbol binario aleatorio y lo inserta en Cytoscape.
    * Elimina cualquier árbol previo en el canvas.
+   * Genera un árbol binario aleatorio y lo inserta en Cytoscape.
    */
   private generateRandomBinaryTree() {
     this.cy.elements().remove()
@@ -96,8 +92,7 @@ export class BinaryTreeComponent implements AfterViewInit {
     const rootId = '1', rootValue = values[0];
     this.cy.add({ data: { id: rootId, value: rootValue } });
 
-    // Generar el arbol insertando valores de forma ordenada en base al nodo raiz, 
-    // a la izquierda los menores y a la derecha los mayores 
+    // Generar el arbol insertando valores de forma ordenada para formar un BST
     for (let i = 1; i < values.length; i++) {
       this.insertNode(rootId, values[i]);
     }
@@ -108,6 +103,11 @@ export class BinaryTreeComponent implements AfterViewInit {
   }
 
   /**
+   * Esta función permite crear un BST https://en.wikipedia.org/wiki/Binary_search_tree
+   * para visualizarlo de esa forma tenemos que usar otro layout como 'breadthfirst' ya que
+   * el layout actual 'dagre' por alguna razón no respeta el orden y los muestra a como quiere 
+   * sin embargo visualmente ofrece una estructura más cercana a la forma de un árbol (ranker: 'tight-tree')
+   * 
    * Inserta un nuevo nodo en el árbol binario dado su valor.
    * Se inserta recursivamente en la posición correcta del subárbol izquierdo o derecho.
    * @param currentNodeId ID del nodo actual donde se está evaluando la inserción.
@@ -197,7 +197,7 @@ export class BinaryTreeComponent implements AfterViewInit {
     }
 
     this.randomButtonDisableFlag = this.resetButtonDisableFlag = true;
-    // Calcular duración total de la animación y reactivar botones
+    // Calcular duración total de la animación para volver a reactivar los botones
     const totalDuration = this.speedAnimation * index;
     setTimeout(() => {
       this.randomButtonDisableFlag = this.resetButtonDisableFlag = false;
@@ -277,7 +277,7 @@ export class BinaryTreeComponent implements AfterViewInit {
   private getRandomIntInclusive(min: number, max: number) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
-    // The maximum is inclusive and the minimum is inclusive
+
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
   }
 }
