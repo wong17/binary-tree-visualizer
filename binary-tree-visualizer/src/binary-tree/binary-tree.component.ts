@@ -48,8 +48,9 @@ export class BinaryTreeComponent implements AfterViewInit {
   resetButtonDisableFlag: boolean = false
   visualizeButtonDisableFlag: boolean = false
 
-  minSpeedAnimation: number = 100
-  maxSpeedAnimation: number = 1000
+  readonly minSpeedAnimation: number = 100
+  readonly maxSpeedAnimation: number = 1000
+  readonly stepAnimation: number = 100
   speedAnimation: number = 500
 
   /**
