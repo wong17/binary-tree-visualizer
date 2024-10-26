@@ -23,7 +23,9 @@ export class BinaryTreeComponent implements AfterViewInit {
         'color': '#fff',
         'width': '40px',
         'height': '40px',
-        'font-size': '25px'
+        'font-size': '25px',
+        'border-width': '1px',
+        'border-color': '#fff'
       }
     },
     {
@@ -171,9 +173,7 @@ export class BinaryTreeComponent implements AfterViewInit {
   visualizeSelectedOrder() {
     this.resetNodeStyles();
 
-    const rootNodeId = '1'; // El id del nodo raíz
     let index = 0;
-
     const highlightNode = (node: cytoscape.NodeSingular) => {
       setTimeout(() => {
         node.style("background-fill", "radial-gradient");
@@ -182,15 +182,17 @@ export class BinaryTreeComponent implements AfterViewInit {
       }, this.speedAnimation * index++);
     };
 
+    const rootNodeId = '1'; // El id del nodo raíz
+    const rootNode = this.cy.nodes().filter(n => n.id() === rootNodeId)
     switch (this.selectedOrder) {
       case 'Pre-order':
-        this.preOrderTraversal(rootNodeId, highlightNode);
+        this.preOrderTraversal(rootNode, highlightNode);
         break;
       case 'In-order':
-        this.inOrderTraversal(rootNodeId, highlightNode);
+        this.inOrderTraversal(rootNode, highlightNode);
         break;
       case 'Post-order':
-        this.postOrderTraversal(rootNodeId, highlightNode);
+        this.postOrderTraversal(rootNode, highlightNode);
         break;
     }
 
@@ -203,44 +205,66 @@ export class BinaryTreeComponent implements AfterViewInit {
   }
 
   /**
-   * Realiza el recorrido en preorden sobre el árbol binario, Root-Left-Right
-   * @param nodeId ID del nodo actual.
-   * @param callback Función a aplicar en cada nodo visitado.
+   * Obtiene el nodo hijo izquierdo de un nodo dado, asumiendo que el primer 'edge' de salida
+   * representa la conexión al hijo izquierdo.
+   * @param node Nodo actual para el cual se quiere obtener el hijo izquierdo.
+   * @returns El nodo hijo izquierdo si existe, o null si no tiene un hijo izquierdo.
    */
-  private preOrderTraversal(nodeId: string, callback: (node: cytoscape.NodeSingular) => void): void {
-    const node = this.cy.getElementById(nodeId);
-    if (!node.length) return;
-
-    callback(node);
-    this.inOrderTraversal(`${nodeId}L`, callback);
-    this.inOrderTraversal(`${nodeId}R`, callback);
+  private getLeftChild(node: cytoscape.NodeSingular): cytoscape.NodeSingular | null {
+    const leftEdge = node.outgoers('edge')[0];
+    return leftEdge ? leftEdge.target() : null;
   }
 
   /**
-   * Realiza el recorrido en inorden sobre el árbol binario, Left-Root-Right
-   * @param nodeId ID del nodo actual.
-   * @param callback Función a aplicar en cada nodo visitado.
+   * Obtiene el nodo hijo derecho de un nodo dado, asumiendo que el segundo 'edge' de salida
+   * representa la conexión al hijo derecho.
+   * @param node Nodo actual para el cual se quiere obtener el hijo derecho.
+   * @returns El nodo hijo derecho si existe, o null si no tiene un hijo derecho.
    */
-  private inOrderTraversal(nodeId: string, callback: (node: cytoscape.NodeSingular) => void): void {
-    const node = this.cy.getElementById(nodeId);
-    if (!node.length) return;
-
-    this.inOrderTraversal(`${nodeId}L`, callback);
-    callback(node);
-    this.inOrderTraversal(`${nodeId}R`, callback);
+  private getRightChild(node: cytoscape.NodeSingular): cytoscape.NodeSingular | null {
+    const rightEdge = node.outgoers('edge')[1];
+    return rightEdge ? rightEdge.target() : null;
   }
 
   /**
-   * Realiza el recorrido en postorden sobre el árbol binario, Left-Right-Root
-   * @param nodeId ID del nodo actual.
-   * @param callback Función a aplicar en cada nodo visitado.
+   * Realiza un recorrido en preorden sobre el árbol binario (Root-Left-Right),
+   * aplicando una función en cada nodo visitado.
+   * @param node Nodo actual desde el cual iniciar el recorrido.
+   * @param callback Función que se aplica en cada nodo visitado durante el recorrido.
    */
-  private postOrderTraversal(nodeId: string, callback: (node: cytoscape.NodeSingular) => void): void {
-    const node = this.cy.getElementById(nodeId);
-    if (!node.length) return;
+  private preOrderTraversal(node: cytoscape.NodeSingular | null, callback: (node: cytoscape.NodeSingular) => void): void {
+    if (!node) return;
 
-    this.postOrderTraversal(`${nodeId}L`, callback);
-    this.postOrderTraversal(`${nodeId}R`, callback);
+    callback(node);
+    this.preOrderTraversal(this.getLeftChild(node), callback);
+    this.preOrderTraversal(this.getRightChild(node), callback);
+  }
+
+  /**
+   * Realiza un recorrido en inorden sobre el árbol binario (Left-Root-Right),
+   * aplicando una función en cada nodo visitado.
+   * @param node Nodo actual desde el cual iniciar el recorrido.
+   * @param callback Función que se aplica en cada nodo visitado durante el recorrido.
+   */
+  private inOrderTraversal(node: cytoscape.NodeSingular | null, callback: (node: cytoscape.NodeSingular) => void): void {
+    if (!node) return;
+
+    this.inOrderTraversal(this.getLeftChild(node), callback);
+    callback(node);
+    this.inOrderTraversal(this.getRightChild(node), callback);
+  }
+
+  /**
+   * Realiza un recorrido en postorden sobre el árbol binario (Left-Right-Root),
+   * aplicando una función en cada nodo visitado.
+   * @param node Nodo actual desde el cual iniciar el recorrido.
+   * @param callback Función que se aplica en cada nodo visitado durante el recorrido.
+   */
+  private postOrderTraversal(node: cytoscape.NodeSingular | null, callback: (node: cytoscape.NodeSingular) => void): void {
+    if (!node) return;
+
+    this.postOrderTraversal(this.getLeftChild(node), callback);
+    this.postOrderTraversal(this.getRightChild(node), callback);
     callback(node);
   }
 
