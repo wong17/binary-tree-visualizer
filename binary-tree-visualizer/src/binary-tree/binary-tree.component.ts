@@ -2,11 +2,17 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import cytoscape from 'cytoscape';
 import dagre, { DagreLayoutOptions } from 'cytoscape-dagre';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+
+enum Format {
+  PNG, JPG
+}
 
 @Component({
   selector: 'app-binary-tree',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MatMenuModule, MatButtonModule],
   templateUrl: './binary-tree.component.html',
   styleUrl: './binary-tree.component.css'
 })
@@ -40,6 +46,11 @@ export class BinaryTreeComponent implements AfterViewInit {
     name: 'dagre',
     ranker: 'tight-tree'
   };
+
+  readonly exportOptions = [
+    { text: 'Export as PNG', format: Format.PNG },
+    { text: 'Export as JPG', format: Format.JPG },
+  ]
 
   readonly _orders: string[] = ['Pre-order', 'In-order', 'Post-order']
   selectedOrder: string = 'Pre-order'
@@ -304,5 +315,36 @@ export class BinaryTreeComponent implements AfterViewInit {
     const maxFloored = Math.floor(max);
 
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+  }
+
+  /**
+   * Permite exportar el contenido del viewport a una imagen
+   * @param format formato a guardar la imagen, PNG o JPG
+   */
+  exportBinaryTree(format: Format) {
+    const options: cytoscape.ExportStringOptions = { full: true, bg: 'black' };
+    const image = format === Format.PNG ? this.cy.png(options) : this.cy.jpg(options);
+
+    // Convertir la imagen base64 a un Blob
+    fetch(image)
+      .then(res => res.blob())
+      .then((blob) => {
+        const extension = format === Format.PNG ? 'png' : 'jpg';
+        const fileName = `binary_tree.${extension}`;
+
+        // Crear un enlace de descarga
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = fileName;
+
+        // Activar la descarga
+        downloadLink.click();
+
+        // Liberar el objeto URL después de la descarga
+        URL.revokeObjectURL(downloadLink.href);
+      })
+      .catch(error => {
+        console.error("Error al crear la imagen Blob:", error);
+      });
   }
 }

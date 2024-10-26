@@ -1,6 +1,23 @@
 <div class="container">
   <section class="container--options">
-    <h1>Binary tree visualizer</h1>
+    <div class="container--with--title">
+      <button class="button--title" mat-button [matMenuTriggerFor]="menu">
+        <img
+          class="button--title--image"
+          src="icons/menu-burger.svg"
+          alt="Visualize icon"
+        />
+      </button>
+      <mat-menu #menu="matMenu" yPosition="below">
+        @for (opt of exportOptions; track $index) {
+        <button mat-menu-item (click)="exportBinaryTree(opt.format)">
+          {{ opt.text }}
+        </button>
+        }
+      </mat-menu>
+      <h1>Binary tree visualizer</h1>
+    </div>
+    <!--Options-->
     <div class="container--options__options">
       <div class="container--with--title">
         <h4>Order</h4>
@@ -25,7 +42,11 @@
         (click)="visualizeSelectedOrder()"
         [disabled]="visualizeButtonDisableFlag"
       >
-        <img src="icons/play.svg" alt="Visualize icon" />
+        <img
+          class="container--button--image"
+          src="icons/play.svg"
+          alt="Visualize icon"
+        />
         Visualize
       </button>
       <button
@@ -33,7 +54,11 @@
         (click)="newRandomBinaryTree()"
         [disabled]="randomButtonDisableFlag"
       >
-        <img src="icons/shuffle.svg" alt="Suffle icon" />
+        <img
+          class="container--button--image"
+          src="icons/shuffle.svg"
+          alt="Suffle icon"
+        />
         Random
       </button>
       <button
@@ -41,7 +66,11 @@
         (click)="resetBinaryTreeStyle()"
         [disabled]="resetButtonDisableFlag"
       >
-        <img src="icons/reset.svg" alt="Reset icon" />
+        <img
+          class="container--button--image"
+          src="icons/reset.svg"
+          alt="Reset icon"
+        />
         Reset
       </button>
     </div>

@@ -6,6 +6,22 @@
   grid-template-rows: auto 1fr;
 }
 
+.button--title {
+  background-color: transparent;
+  height: 2.2em;
+  width: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.button--title--image {
+  width: 24px;
+  height: auto;
+}
+
 .container--options {
   display: flex;
   align-items: center;
@@ -22,6 +38,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.3em;
+}
+
+.container--with--title:first-child {
+  gap: 0;
 }
 
 select {
@@ -43,7 +63,7 @@ select {
   gap: 0.3em;
 }
 
-img {
+.container--button--image {
   width: 16px;
   height: auto;
 }
