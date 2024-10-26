@@ -28,6 +28,10 @@
   justify-content: space-between;
 }
 
+.container--options>.container--with--title:first-child {
+  gap: 0;
+}
+
 .container--options__options {
   display: flex;
   gap: 0.5em;
@@ -40,9 +44,6 @@
   gap: 0.3em;
 }
 
-.container--with--title:first-child {
-  gap: 0;
-}
 
 select {
   height: 2em;
