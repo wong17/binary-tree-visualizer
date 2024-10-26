@@ -181,11 +181,21 @@ export class BinaryTreeComponent implements AfterViewInit {
     const adjustedSpeed = this.maxSpeedAnimation + this.minSpeedAnimation - this.speedAnimation;
 
     let index = 0;
+    let previousNode: cytoscape.NodeSingular | null = null;
     const highlightNode = (node: cytoscape.NodeSingular) => {
       setTimeout(() => {
+        // Nodo anterior
+        if (previousNode) {
+          previousNode.style("background-fill", "radial-gradient");
+          previousNode.style("background-gradient-stop-colors", "cyan magenta");
+          previousNode.style("background-gradient-stop-positions", "25 75 80");
+        }
+        // Nodo actual
         node.style("background-fill", "radial-gradient");
-        node.style("background-gradient-stop-colors", "cyan magenta");
+        node.style("background-gradient-stop-colors", "#3dd94a darkgreen");
         node.style("background-gradient-stop-positions", "25 75 80");
+
+        previousNode = node;
       }, adjustedSpeed * index++);
     };
 
@@ -203,10 +213,17 @@ export class BinaryTreeComponent implements AfterViewInit {
         break;
     }
 
+    // Deshabilitar los botones
     this.randomButtonDisableFlag = this.resetButtonDisableFlag = this.visualizeButtonDisableFlag = true;
-    // Calcular duración total de la animación para volver a reactivar los botones
+    // Calcular duración total de la animación para volver a habilitar los botones
     const totalDuration = adjustedSpeed * index;
     setTimeout(() => {
+      // Restablece el color del último nodo una vez finalizada la animación
+      if (previousNode) {
+        previousNode.style("background-fill", "radial-gradient");
+        previousNode.style("background-gradient-stop-colors", "cyan magenta");
+        previousNode.style("background-gradient-stop-positions", "25 75 80");
+      }
       this.randomButtonDisableFlag = this.resetButtonDisableFlag = this.visualizeButtonDisableFlag = false;
     }, totalDuration);
   }
