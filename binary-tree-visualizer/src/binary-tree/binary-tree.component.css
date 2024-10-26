@@ -31,10 +31,19 @@ select {
   border-radius: 0.4rem;
 }
 
-button {
+.container--button {
   height: 2.2em;
-  width: 5em;
+  width: 6.6em;
   text-align: center;
   cursor: pointer;
   border-radius: 0.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em;
+}
+
+img {
+  width: 16px;
+  height: auto;
 }

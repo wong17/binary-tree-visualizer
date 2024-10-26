@@ -90,7 +90,7 @@ export class BinaryTreeComponent implements AfterViewInit {
     this.cy.elements().remove()
 
     // Generar nodos de forma aleatoria
-    const nodeCount = this.getRandomIntInclusive(10, 100);
+    const nodeCount = this.getRandomIntInclusive(20, 100);
     const values: number[] = Array.from({ length: nodeCount }, () => this.getRandomIntInclusive(1, 100));
 
     // Tomar el primer valor generado como nodo raiz

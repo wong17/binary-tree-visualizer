@@ -21,21 +21,27 @@
         />
       </div>
       <button
+        class="container--button"
         (click)="visualizeSelectedOrder()"
         [disabled]="visualizeButtonDisableFlag"
       >
+        <img src="icons/play.svg" alt="Visualize icon" />
         Visualize
       </button>
       <button
+        class="container--button"
         (click)="newRandomBinaryTree()"
         [disabled]="randomButtonDisableFlag"
       >
+        <img src="icons/shuffle.svg" alt="Suffle icon" />
         Random
       </button>
       <button
+        class="container--button"
         (click)="resetBinaryTreeStyle()"
         [disabled]="resetButtonDisableFlag"
       >
+        <img src="icons/reset.svg" alt="Reset icon" />
         Reset
       </button>
     </div>
