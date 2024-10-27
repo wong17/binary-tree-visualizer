@@ -2,7 +2,7 @@
 
 ## Tecnologías/bibliotecas utilizadas
 - Angular 18.2.10
-- Cytoscape.js
+- cytoscape.js
 - cytoscape.js-dagre
 
 ![image](https://github.com/user-attachments/assets/c9724dfc-1c7f-4f50-babc-7f62a475b99e)
