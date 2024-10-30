@@ -1,7 +1,7 @@
 # Binary tree visualizer
 
 ## Tecnologías/bibliotecas utilizadas
-- Angular 18.2.10
+- Angular 18
 - cytoscape.js
 - cytoscape.js-dagre
 
